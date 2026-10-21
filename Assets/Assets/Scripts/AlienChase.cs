@@ -11,6 +11,7 @@ public class AlienChase : MonoBehaviour
     public float viewAngle = 90.0f;
     bool canSee;
 
+    //Calculating distance to player and chase every frame condition
     void Update()
     {
         Vector3 toPlayer = player.position - transform.position;   
@@ -30,6 +31,7 @@ public class AlienChase : MonoBehaviour
         
     }
 
+    //Adding distance, angle and raycast as if conditions
     bool CanSeePlayer()
     {
         Vector3 toPlayer = player.position - transform.position;
@@ -53,12 +55,13 @@ public class AlienChase : MonoBehaviour
             if (!hit.transform.CompareTag("Player"))
             {
                 return false;
-            }
+            }    
         }
 
         return true;
     }
 
+    //Drawing gizmos
     void OnDrawGizmos()
     {
         if (canSee)

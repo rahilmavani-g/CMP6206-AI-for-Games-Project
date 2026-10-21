@@ -35,6 +35,13 @@ Built step by step, tracked on a KANBAN board (Backlog / Up next / Doing / Done)
 ## 6. Progress
 **20/10/2026 – Step 1 done.** Added a test scene, player movement and an alien that moves towards the player using vectors. Had an Input System error and fixed it by setting Active Input Handling to Both. The alien currently cheats (always knows where the player is), so next is giving it vision. Decided the player will also be an AI agent.
 
+## 7. Feedback
+# Milestone - 1
+1. Justify why I'm choosing the methods and strategies. (for ex, optimal?)
+2. Try to test the AI in different levels to find out if its working.
+3. Look for a suitable level (but no need to worry about modelling).
+4. Try getting it working first before broadnening the approaches.
+
 ## 7. References
 - CMP6206 Lectures 1–4, Agents and Sensors lab, Vectors lab
 - Thompson, T. (2017) *The Perfect Organism: The AI of Alien: Isolation*. Game Developer. https://www.gamedeveloper.com/design/the-perfect-organism-the-ai-of-alien-isolation
