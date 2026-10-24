@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class AlienChase : MonoBehaviour
 {
+    //Enum + switch
+    enum AlienState { Patrol, Chase, Search }
+    AlienState state = AlienState.Patrol;
+
     //variables
-    public Transform player;      
+    public Transform player;
     public float speed = 3f;
     public float stopDistance = 1.5f;
 
@@ -11,24 +15,104 @@ public class AlienChase : MonoBehaviour
     public float viewAngle = 90.0f;
     bool canSee;
 
-    //Calculating distance to player and chase every frame condition
+    //search timer
+    float searchTimer;
+    public float searchTime = 4f;
+
+    Vector3 lastKnownPosition;
+
+    //patrol points pos
+    public Transform[] patrolPoints;
+    int patrolIndex = 0;
+
+    private void Start()
+    {
+        lastKnownPosition = transform.position;
+    }
+
+    //Calculating distance to points/player and chase, patrol, search every frame condition/case
     void Update()
     {
-        Vector3 toPlayer = player.position - transform.position;   
-        toPlayer.y = 0;                                            
-        float distance = toPlayer.magnitude;
-
         canSee = CanSeePlayer();
-        if(canSee)
+
+        if (canSee)
         {
-            if (distance > stopDistance)
-            {
-                Vector3 direction = toPlayer.normalized;
-                transform.position += direction * speed * Time.deltaTime;
-                transform.forward = direction;
-            }
+            lastKnownPosition = player.position;
         }
-        
+
+        switch (state)
+        {
+            //Patrol between points
+            case AlienState.Patrol:
+
+               bool patrolArrived =  MoveTo(patrolPoints[patrolIndex].position);
+
+                if (patrolArrived)
+                {
+                    patrolIndex++;
+                }
+
+                if(patrolIndex == patrolPoints.Length)
+                {
+                    patrolIndex = 0;
+                }
+
+                if (canSee)
+                {
+                    state = AlienState.Chase;
+                }
+                break;
+
+                //Chase the player
+            case AlienState.Chase:
+
+                bool arrived = MoveTo(lastKnownPosition);
+
+                if (arrived && !canSee)
+                {
+                    state = AlienState.Search;
+                    searchTimer = searchTime;
+                }
+                break;
+
+                //Search by rotating
+            case AlienState.Search:
+
+                searchTimer -= Time.deltaTime;
+                transform.Rotate(0, 90f * Time.deltaTime, 0);
+                if(canSee)
+                {
+                    state = AlienState.Chase;
+                }
+                else
+                {
+                    if(searchTimer <= 0)
+                    {
+                        state = AlienState.Patrol;
+                    }
+                }
+                break;
+        }
+
+        //Logs
+        Debug.Log(state);
+    }
+
+    //Adding memory
+    bool MoveTo(Vector3 target)
+    {
+        Vector3 toTarget = target - transform.position;
+        toTarget.y = 0;
+        float distance = toTarget.magnitude;
+
+        if (distance > stopDistance)
+        {
+            Vector3 direction = toTarget.normalized;
+            transform.position += direction * speed * Time.deltaTime;
+            transform.forward = direction;
+            return false;
+        }
+        return true;
     }
 
     //Adding distance, angle and raycast as if conditions
@@ -41,12 +125,12 @@ public class AlienChase : MonoBehaviour
         float angletoPlayer = Vector3.Angle(transform.forward, toPlayer);
         //Debug.Log("Angle : " + angletoPlayer);
 
-        
+
         if (distance > viewDistance)
         {
             return false;
         }
-        if (angletoPlayer >  viewAngle / 2f)
+        if (angletoPlayer > viewAngle / 2f)
         {
             return false;
         }
@@ -55,7 +139,7 @@ public class AlienChase : MonoBehaviour
             if (!hit.transform.CompareTag("Player"))
             {
                 return false;
-            }    
+            }
         }
 
         return true;
