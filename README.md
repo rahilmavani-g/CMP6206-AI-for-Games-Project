@@ -24,8 +24,8 @@ I'll measure success with debug gizmos/state display, BFS vs DFS vs UCS nodes ex
 ## 5. Methodology / planning
 Built step by step, tracked on a KANBAN board (Backlog / Up next / Doing / Done). Dated images of the board are in the `Docs` folder of this project.
 1. Scene, WASD player, alien moves to player ✅
-2. Alien vision
-3. Alien FSM (Roam, Chase, Search)
+2. Alien vision ✅
+3. Alien FSM (Roam, Chase, Search) ✅
 4. Hearing + stack FSM
 5. Grid pathfinding (BFS/DFS/UCS)
 6. Survivor AI
@@ -34,6 +34,10 @@ Built step by step, tracked on a KANBAN board (Backlog / Up next / Doing / Done)
 
 ## 6. Progress
 **20/10/2026 – Step 1 done.** Added a test scene, player movement and an alien that moves towards the player using vectors. Had an Input System error and fixed it by setting Active Input Handling to Both. The alien currently cheats (always knows where the player is), so next is giving it vision. Decided the player will also be an AI agent.
+
+**24/10/2026 - Step 2 done.** Added Finite state machines, with 3 different states (Roam,Chase,Search). Alien now has a vision cone and a short memory of where it last saw the player. 
+
+**Current Progress** Created grid with walls and where it cant move to. Adding pathfinding using different approaches soon.
 
 ## 7. Feedback
 # Milestone - 1
