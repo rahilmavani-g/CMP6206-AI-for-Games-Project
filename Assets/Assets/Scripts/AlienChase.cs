@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AlienChase : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class AlienChase : MonoBehaviour
     //patrol points pos
     public Transform[] patrolPoints;
     int patrolIndex = 0;
+
+    //ref to pathfinding
+    public Pathfinding pathfinding;
 
     private void Start()
     {
@@ -103,16 +107,27 @@ public class AlienChase : MonoBehaviour
     {
         Vector3 toTarget = target - transform.position;
         toTarget.y = 0;
-        float distance = toTarget.magnitude;
-
-        if (distance > stopDistance)
+        if (toTarget.magnitude <= stopDistance)
         {
-            Vector3 direction = toTarget.normalized;
-            transform.position += direction * speed * Time.deltaTime;
-            transform.forward = direction;
+            return true;
+        }
+
+        List<Node> path = pathfinding.FindPath(transform.position, target);
+
+        if (path == null || path.Count == 0)
+        {
             return false;
         }
-        return true;
+
+        Vector3 nextStep = path[0].worldPosition;
+        Vector3 toStep = nextStep - transform.position;
+        toStep.y = 0;
+
+        Vector3 direction = toStep.normalized;
+        transform.position += direction * speed * Time.deltaTime;
+        transform.forward = direction;
+        return false;
+
     }
 
     //Adding distance, angle and raycast as if conditions

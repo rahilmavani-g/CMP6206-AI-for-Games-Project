@@ -20,6 +20,8 @@ public class NavGrid : MonoBehaviour
     //player
     public Transform player;
 
+    public float agentRadius = 0.6f;
+
     void Start()
     {
         CreateGrid();
@@ -43,7 +45,7 @@ public class NavGrid : MonoBehaviour
             {
                 Vector3 worldPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
 
-                bool walkable = !Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask);
+                bool walkable = !Physics.CheckSphere(worldPoint, agentRadius, unwalkableMask);
 
                 grid[x,y] = new Node (walkable, worldPoint,x, y);
             }

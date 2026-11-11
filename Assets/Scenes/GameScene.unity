@@ -333,6 +333,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   player: {fileID: 1656256304}
+  agentRadius: 0.6
 --- !u!4 &294845888
 Transform:
   m_ObjectHideFlags: 0
@@ -765,6 +766,7 @@ MonoBehaviour:
   - {fileID: 1442312961}
   - {fileID: 1473694281}
   - {fileID: 841085486}
+  pathfinding: {fileID: 294845889}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
