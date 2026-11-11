@@ -307,6 +307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 294845888}
   - component: {fileID: 294845887}
+  - component: {fileID: 294845889}
   m_Layer: 0
   m_Name: NavGrid
   m_TagString: Untagged
@@ -331,6 +332,7 @@ MonoBehaviour:
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 8
+  player: {fileID: 1656256304}
 --- !u!4 &294845888
 Transform:
   m_ObjectHideFlags: 0
@@ -346,6 +348,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &294845889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294845886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5593fec096b1ce446b20ea3138ad13bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pathfinding
+  grid: {fileID: 294845887}
+  seeker: {fileID: 830589601}
+  target: {fileID: 1656256304}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
