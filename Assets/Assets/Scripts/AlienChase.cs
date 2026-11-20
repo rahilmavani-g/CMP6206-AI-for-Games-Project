@@ -31,6 +31,8 @@ public class AlienChase : MonoBehaviour
 
     public LayerMask wallMask;
 
+    public float bodyRadius = 0.5f;
+
     private void Start()
     {
         lastKnownPosition = transform.position;
@@ -123,13 +125,16 @@ public class AlienChase : MonoBehaviour
 
         Vector3 nextStep = path[0].worldPosition;
 
-        //Smoothing
+        //Smoothing & AgentBody
         for (int i = path.Count - 1; i >= 0; i--)
         {
             Vector3 candidate = path[i].worldPosition;
             candidate.y = transform.position.y;
 
-            if (!Physics.Linecast(transform.position, candidate, wallMask))
+            Vector3 toCandidate = candidate - transform.position;   
+            float dist = toCandidate.magnitude;                     
+
+            if (!Physics.SphereCast(transform.position, bodyRadius, toCandidate.normalized, out RaycastHit hit, dist, wallMask))
             {
                 nextStep = candidate;
                 break;
