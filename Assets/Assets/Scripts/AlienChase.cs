@@ -9,7 +9,9 @@ public class AlienChase : MonoBehaviour
 
     //variables
     public Transform player;
-    public float speed = 3f;
+    public float patrolSpeed = 2f;
+    public float chaseSpeed = 5f;
+
     public float stopDistance = 1.5f;
 
     public float viewDistance = 10.0f;
@@ -33,6 +35,9 @@ public class AlienChase : MonoBehaviour
 
     public float bodyRadius = 0.5f;
 
+    //Animator
+    public Animator animator;
+
     private void Start()
     {
         lastKnownPosition = transform.position;
@@ -53,7 +58,10 @@ public class AlienChase : MonoBehaviour
             //Patrol between points
             case AlienState.Patrol:
 
-               bool patrolArrived =  MoveTo(patrolPoints[patrolIndex].position);
+                animator.SetFloat("Speed", 0.5f);     
+                animator.SetBool("Searching", false);
+
+                bool patrolArrived =  MoveTo(patrolPoints[patrolIndex].position, patrolSpeed);
 
                 if (patrolArrived)
                 {
@@ -74,17 +82,33 @@ public class AlienChase : MonoBehaviour
                 //Chase the player
             case AlienState.Chase:
 
-                bool arrived = MoveTo(lastKnownPosition);
+                animator.SetFloat("Speed", 1.0f);
+                animator.SetBool("Searching", false);
+
+                bool arrived = MoveTo(lastKnownPosition, chaseSpeed);
 
                 if (arrived && !canSee)
                 {
                     state = AlienState.Search;
                     searchTimer = searchTime;
                 }
+
+                if (arrived)
+                {
+                    animator.SetFloat("Speed", 0f);
+                }
+                else
+                {
+                    animator.SetFloat("Speed", 1f);
+                }
+
                 break;
 
                 //Search by rotating
             case AlienState.Search:
+
+                animator.SetFloat("Speed", 0.0f);
+                animator.SetBool("Searching", true);
 
                 searchTimer -= Time.deltaTime;
                 transform.Rotate(0, 90f * Time.deltaTime, 0);
@@ -107,7 +131,7 @@ public class AlienChase : MonoBehaviour
     }
 
     //Walk to target along the A* path (with raycast smoothing)
-    bool MoveTo(Vector3 target)
+    bool MoveTo(Vector3 target, float moveSpeed)
     {
         Vector3 toTarget = target - transform.position;
         toTarget.y = 0;
@@ -145,7 +169,7 @@ public class AlienChase : MonoBehaviour
         toStep.y = 0;
 
         Vector3 direction = toStep.normalized;
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * moveSpeed * Time.deltaTime;
         transform.forward = direction;
         return false;
 
