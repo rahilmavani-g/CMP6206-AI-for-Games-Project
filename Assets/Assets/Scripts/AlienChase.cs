@@ -29,6 +29,8 @@ public class AlienChase : MonoBehaviour
     //ref to pathfinding
     public Pathfinding pathfinding;
 
+    public LayerMask wallMask;
+
     private void Start()
     {
         lastKnownPosition = transform.position;
@@ -102,7 +104,7 @@ public class AlienChase : MonoBehaviour
         Debug.Log(state);
     }
 
-    //Adding memory
+    //Walk to target along the A* path (with raycast smoothing)
     bool MoveTo(Vector3 target)
     {
         Vector3 toTarget = target - transform.position;
@@ -120,6 +122,20 @@ public class AlienChase : MonoBehaviour
         }
 
         Vector3 nextStep = path[0].worldPosition;
+
+        //Smoothing
+        for (int i = path.Count - 1; i >= 0; i--)
+        {
+            Vector3 candidate = path[i].worldPosition;
+            candidate.y = transform.position.y;
+
+            if (!Physics.Linecast(transform.position, candidate, wallMask))
+            {
+                nextStep = candidate;
+                break;
+            }
+        }
+
         Vector3 toStep = nextStep - transform.position;
         toStep.y = 0;
 

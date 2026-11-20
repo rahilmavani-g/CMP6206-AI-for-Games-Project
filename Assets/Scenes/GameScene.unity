@@ -767,6 +767,9 @@ MonoBehaviour:
   - {fileID: 1473694281}
   - {fileID: 841085486}
   pathfinding: {fileID: 294845889}
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
