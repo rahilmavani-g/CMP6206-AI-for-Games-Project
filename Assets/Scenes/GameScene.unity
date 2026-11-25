@@ -3947,7 +3947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlienChase
   player: {fileID: 1656256304}
-  speed: 3
+  patrolSpeed: 2
+  chaseSpeed: 5
   stopDistance: 1.5
   viewDistance: 10
   viewAngle: 90

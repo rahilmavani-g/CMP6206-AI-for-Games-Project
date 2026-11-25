@@ -82,7 +82,6 @@ public class AlienChase : MonoBehaviour
                 //Chase the player
             case AlienState.Chase:
 
-                animator.SetFloat("Speed", 1.0f);
                 animator.SetBool("Searching", false);
 
                 bool arrived = MoveTo(lastKnownPosition, chaseSpeed);
@@ -127,7 +126,7 @@ public class AlienChase : MonoBehaviour
         }
 
         //Logs
-        Debug.Log(state);
+       //Debug.Log(state);
     }
 
     //Walk to target along the A* path (with raycast smoothing)
@@ -170,7 +169,8 @@ public class AlienChase : MonoBehaviour
 
         Vector3 direction = toStep.normalized;
         transform.position += direction * moveSpeed * Time.deltaTime;
-        transform.forward = direction;
+        Quaternion targetRot = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 8f * Time.deltaTime);
         return false;
 
     }
